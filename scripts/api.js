@@ -2,8 +2,8 @@
 
 class API {
 
-    static async connectAsync() {
-        this.socket = io.connect();
+    static async connectAsync(token) {
+        this.socket = io({ auth: { token: token } });
         return new Promise((resolve, _) => {
             this.socket.on('connect', resolve);
         });
