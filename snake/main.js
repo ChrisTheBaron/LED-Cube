@@ -280,37 +280,39 @@ $(async function () {
         //#region just for testing
         $('svg').empty();
 
-        $('svg').append(`<g transform="translate(0,${side_length * 10})">
-                <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,50);"/>
+        const svgScale = 6;
+
+        $('svg').append(`<g transform="translate(0,${side_length * svgScale})">
+                <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,50);"/>
             </g>`);
 
-        $('svg').append(`<g transform="translate(${side_length * 10},${side_length * 10})">
-            <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,100);"/>
+        $('svg').append(`<g transform="translate(${side_length * svgScale},${side_length * svgScale})">
+            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,100);"/>
         </g>`);
 
-        $('svg').append(`<g transform="translate(${side_length * 10},${side_length * 20})">
-            <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,100);"/>
+        $('svg').append(`<g transform="translate(${side_length * svgScale},${side_length * svgScale *2})">
+            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,100);"/>
         </g>`);
 
-        $('svg').append(`<g transform="translate(${side_length * 20},${side_length * 10})">
-            <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,150);"/>
+        $('svg').append(`<g transform="translate(${side_length * svgScale * 2},${side_length * svgScale})">
+            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,150);"/>
         </g>`);
 
-        $('svg').append(`<g transform="translate(${side_length * 20},0)">
-            <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,150);"/>
+        $('svg').append(`<g transform="translate(${side_length * svgScale * 2},0)">
+            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,150);"/>
         </g>`);
 
-        $('svg').append(`<g transform="translate(${side_length * 30},${side_length * 10})">
-            <rect width="${side_length * 10}" height="${side_length * 10}" style="fill:rgb(255,255,200);"/>
+        $('svg').append(`<g transform="translate(${side_length * svgScale * 3},${side_length * svgScale})">
+            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,200);"/>
         </g>`);
 
         for (let pos of body) {
-            $('svg').append(`<g transform="translate(${pos.x * 10},${pos.y * 10})">
-                <rect width="10" height="10" style="fill:rgb(255,0,0);"/>
+            $('svg').append(`<g transform="translate(${pos.x * svgScale},${pos.y * svgScale})">
+                <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(255,0,0);"/>
             </g>`);
         }
-        $('svg').append(`<g transform="translate(${food.x * 10},${food.y * 10})">
-                <rect width="10" height="10" style="fill:rgb(0,255,0);"/>
+        $('svg').append(`<g transform="translate(${food.x * svgScale},${food.y * svgScale})">
+                <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(0,255,0);"/>
             </g>`);
         $("#svg-outer").html($("#svg-outer").html());
         //#endregion
