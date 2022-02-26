@@ -10,7 +10,7 @@ const c = {
 let connected = false;
 
 (async function () {
-    await API.connectAsync("hi");
+    await API.connectAsync();
     connected = true;
 }());
 

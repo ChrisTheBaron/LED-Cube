@@ -2,7 +2,7 @@
 
 class API {
 
-    static async connectAsync(token) {
+    static async connectAsync() {
         this.socket = io({ auth: { token: getCookie('ticket') } });
         return new Promise((resolve, _) => {
             this.socket.on('connect', resolve);
