@@ -3,7 +3,7 @@
     const fps = 12;
 
     let frameData = await gifFrames({
-        url: "http://localhost:8080/animations/template.gif",
+        url: "/animations/template.gif",
         frames: 'all',
         cumulative: true,
         outputType: 'png'
