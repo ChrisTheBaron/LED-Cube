@@ -3,7 +3,7 @@
     const fps = 12;
 
     let frameData = await gifFrames({
-        url: "/animations/template.gif",
+        url: "/animations/directionSample.gif",
         frames: 'all',
         cumulative: true,
         outputType: 'png'
