@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1;maximum-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>Animate</title>
 </head>
 <body>
+
+    <script src="../scripts/jquery-3.6.0.slim.min.js"></script>
     <script src="../scripts/socket.io.min.js"></script>
     <script src="../scripts/api.js"></script>
     <script src="./gif-frames.js"></script>
     <script src="./main.js"></script>
+
+    <input type="file" id="file" accept="image/gif" />
+    <input type="button" id="go" value="Go" />
+
+    <p id="progress">
+
+    </p>
+
 </body>
 </html>
