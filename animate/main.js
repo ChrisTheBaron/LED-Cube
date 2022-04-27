@@ -7,7 +7,7 @@ $().ready(async () => {
 
     await API.connectAsync();
 
-    $('#go').on('click', async () => {
+    $('#file').on('change', async () => {
 
         let file = $('#file')[0].files[0];
 
