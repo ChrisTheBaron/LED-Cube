@@ -165,6 +165,7 @@ let connected = false;
 (async function () {
     await API.connectAsync();
     connected = true;
+    document.getElementById('reset').click();
 }());
 
 window.updateCube = function (data) {
