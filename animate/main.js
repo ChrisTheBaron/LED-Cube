@@ -5,6 +5,8 @@ let frame = 0;
 
 $().ready(async () => {
 
+    bsCustomFileInput.init();
+
     await API.connectAsync();
 
     $('#file').on('change', async () => {

@@ -1,5 +1,5 @@
-const side_length = 28;
-const speed = 100;
+const side_length = 24;
+const speed = 200;
 
 const UP = 0;
 const RIGHT = 1;
@@ -8,9 +8,8 @@ const LEFT = 3;
 
 $(async function () {
 
-    //await API.connectAsync();
+    await API.connectAsync();
 
-    //0-3. 0 = up, 1 = right
     let velocity;
     let body;
     let food;
@@ -18,15 +17,19 @@ $(async function () {
     let score;
 
     async function setupAndPlay() {
-        velocity = RIGHT;
+        if (alive && !confirm("Are you sure you want to restart your game? You will lose your current progress.")) {
+            return;
+        }
+        velocity = DOWN;
         body = [
-            { x: side_length + 4, y: side_length + 4 },
-            { x: side_length + 5, y: side_length + 4 },
-            { x: side_length + 6, y: side_length + 4 }
+            { x: side_length - 4, y: y0_for_segment(2) + 4 },
+            { x: side_length - 5, y: y0_for_segment(2) + 4 },
+            { x: side_length - 6, y: y0_for_segment(2) + 4 }
         ];
         placeFood();
         alive = true;
         score = 0;
+        render();
         while (alive) {
             let [nextPixel, nextVelocity] = determineNextPixelAndVelocity(body[body.length - 1], velocity);
             if (intersectsWithBody(nextPixel)) {
@@ -44,18 +47,17 @@ $(async function () {
             render();
             await sleep(speed);
         }
-        alert("DEAD. Your score was " + score);
-        if (confirm("Want to play again?")) {
-            await setupAndPlay();
-        }
+        alert("Oops! Hit play to start again.");
     }
 
-    function left() { if (--velocity < 0) velocity = 3; }
+    function left() { if (--velocity < UP) velocity = LEFT; }
 
-    function right() { if (++velocity > 3) velocity = 0; }
+    function right() { if (++velocity > LEFT) velocity = UP; }
 
     $('#left').click(left);
     $('#right').click(right);
+
+    $('#play').click(setupAndPlay);
 
     document.onkeydown = function checkKey(e) {
         e = e || window.event;
@@ -67,24 +69,27 @@ $(async function () {
         }
     };
 
-    await setupAndPlay();
+    function y0_for_segment(segment) {
+        return side_length * segment;
+    }
 
-    function determineNextPixelAndVelocity(currentHead, currentVelocity) {
-        switch (determineCurrentSegment(currentHead)) {
+    function determineNextPixelAndVelocity(currentPixel, currentVelocity) {
+        const currentSegment = determineCurrentSegment(currentPixel);
+        switch (currentSegment) {
             case 0:
-                return segment0(currentHead, currentVelocity);
+                return segment0(currentPixel, currentVelocity);
             case 1:
-                return segment1(currentHead, currentVelocity);
+                return segment1(currentPixel, currentVelocity);
             case 2:
-                return segment2(currentHead, currentVelocity);
+                return segment2(currentPixel, currentVelocity);
             case 3:
-                return segment3(currentHead, currentVelocity);
+                return segment3(currentPixel, currentVelocity);
             case 4:
-                return segment4(currentHead, currentVelocity);
+                return segment4(currentPixel, currentVelocity);
             case 5:
-                return segment5(currentHead, currentVelocity);
+                return segment5(currentPixel, currentVelocity);
             default:
-                throw new Error(`Out of bounds! ${currentHead.x} ${currentHead.y}`);
+                throw new Error(`Out of bounds! ${currentPixel.x} ${currentPixel.y}`);
         }
     }
 
@@ -101,155 +106,144 @@ $(async function () {
         }
     }
 
-    function segment1(currentPixel, currentVelocity) {
-        switch (currentVelocity) {
-            case UP:
-                if (currentPixel.y - 1 < side_length) {
-                    return [{ x: side_length * 2, y: currentPixel.x - side_length }, RIGHT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-            case RIGHT:
-            case DOWN:
-            case LEFT:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-        }
-    }
-
-    function segment3(currentPixel, currentVelocity) {
-        switch (currentVelocity) {
-            case LEFT:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-            case UP:
-                if (currentPixel.y - 1 < side_length) {
-                    return [{ x: (side_length * 3) - 1, y: side_length - (currentPixel.x - (side_length * 3)) }, LEFT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-            case RIGHT:
-                if (currentPixel.x + 1 >= side_length * 4) {
-                    return [{ x: 0, y: currentPixel.y }, RIGHT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-            case DOWN:
-                if (currentPixel.y + 1 >= side_length * 2) {
-                    return [{ x: (side_length * 2) - (currentPixel.x - side_length * 3), y: (side_length * 3) - 1 }, UP];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-        }
-    }
-
-    function segment5(currentPixel, currentVelocity) {
-        switch (currentVelocity) {
-            case UP:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-            case LEFT:
-                if (currentPixel.x - 1 < side_length) {
-                    return [{ x: side_length - (currentPixel.y - side_length * 2), y: (side_length * 2) - 1 }, UP];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-            case DOWN:
-                if (currentPixel.y + 1 >= side_length * 3) {
-                    return [{ x: (side_length * 5) - currentPixel.x, y: (side_length * 2) - 1 }, UP];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-            case RIGHT:
-                if (currentPixel.x + 1 >= side_length * 2) {
-                    return [{ x: currentPixel.y, y: (side_length * 2) - 1 }, UP];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
-        }
-    }
-
     function segment0(currentPixel, currentVelocity) {
         switch (currentVelocity) {
             case UP:
-                if (currentPixel.y - 1 < side_length) {
-                    return [{ x: (3 * side_length) - currentPixel.x, y: 0 }, DOWN];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.y <= 0) {
+                    return [{ x: side_length - 1, y: y0_for_segment(5) - currentPixel.x - 1 }, LEFT];
                 }
+                break;
             case RIGHT:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-            case DOWN:
-                if (currentPixel.y + 1 >= side_length * 2) {
-                    return [{ x: side_length, y: (3 * side_length) - currentPixel.x }, RIGHT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: side_length - currentPixel.y - 1, y: y0_for_segment(2) }, DOWN];
                 }
+                break;
             case LEFT:
-                if (currentPixel.x - 1 < 0) {
-                    return [{ x: (4 * side_length) - 1, y: currentPixel.y }, LEFT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.x <= 0) {
+                    return [{ x: side_length - 1, y: y0_for_segment(5) + currentPixel.y }, LEFT];
                 }
+                break;
+            case DOWN:
         }
+        return handleNormalVelocity(currentPixel, currentVelocity);
     }
 
-    function segment4(currentPixel, currentVelocity) {
+    function segment1(currentPixel, currentVelocity) {
         switch (currentVelocity) {
             case DOWN:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-            case LEFT:
-                if (currentPixel.x - 1 < side_length * 2) {
-                    return [{ x: side_length + currentPixel.y, y: side_length }, DOWN];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.y >= y0_for_segment(2) - 1) {
+                    return [{ x: 0, y: y0_for_segment(4) - currentPixel.x - 1 }, RIGHT];
                 }
-            case UP:
-                if (currentPixel.y - 1 < 0) {
-                    return [{ x: (side_length * 3) - currentPixel.x, y: side_length }, DOWN];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
-                }
+                break;
             case RIGHT:
-                if (currentPixel.x + 1 >= side_length * 3) {
-                    return [{ x: (side_length * 4) - currentPixel.y, y: side_length }, DOWN];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: 0, y: currentPixel.y + side_length }, RIGHT];
                 }
+                break;
+            case LEFT:
+                if (currentPixel.x <= 0) {
+                    return [{ x: y0_for_segment(2) - currentPixel.y - 1, y: y0_for_segment(6) - 1 }, UP];
+                }
+                break;
+            case UP:
         }
+        return handleNormalVelocity(currentPixel, currentVelocity);
     }
 
     function segment2(currentPixel, currentVelocity) {
         switch (currentVelocity) {
             case UP:
-            case RIGHT:
-            case LEFT:
-                return handleNormalVelocity(currentPixel, currentVelocity);
-            case DOWN:
-                if (currentPixel.y + 1 >= side_length * 2) {
-                    return [{ x: (side_length * 2) - 1, y: currentPixel.x }, LEFT];
-                } else {
-                    return handleNormalVelocity(currentPixel, currentVelocity);
+                if (currentPixel.y <= y0_for_segment(2)) {
+                    return [{ x: side_length - 1, y: side_length - currentPixel.x - 1 }, LEFT];
                 }
+                break;
+            case RIGHT:
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: y0_for_segment(3) - currentPixel.y - 1, y: y0_for_segment(4) }, DOWN];
+                }
+                break;
+            case LEFT:
+                if (currentPixel.x <= 0) {
+                    return [{ x: side_length - 1, y: currentPixel.y - side_length }, LEFT];
+                }
+                break;
+            case DOWN:
         }
+        return handleNormalVelocity(currentPixel, currentVelocity);
     }
 
-    /**
-     * (0,0)    ___
-     *  ___ ___| 4 |___
-     * | 0 | 1 | 2 | 3 |
-     *  ---| 5 |--- ---
-     *      ---
-     */
+    function segment3(currentPixel, currentVelocity) {
+        switch (currentVelocity) {
+            case RIGHT:
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: 0, y: currentPixel.y + side_length }, RIGHT];
+                }
+                break;
+            case DOWN:
+                if (currentPixel.y >= y0_for_segment(4) - 1) {
+                    return [{ x: 0, y: y0_for_segment(6) - currentPixel.x - 1 }, RIGHT];
+                }
+                break;
+            case LEFT:
+                if (currentPixel.x <= 0) {
+                    return [{ x: y0_for_segment(4) - currentPixel.y - 1, y: y0_for_segment(2) - 1 }, UP];
+                }
+                break;
+            case UP:
+        }
+        return handleNormalVelocity(currentPixel, currentVelocity);
+    }
+
+    function segment4(currentPixel, currentVelocity) {
+        switch (currentVelocity) {
+            case UP:
+                if (currentPixel.y <= y0_for_segment(4)) {
+                    return [{ x: side_length - 1, y: y0_for_segment(3) - currentPixel.x - 1 }, LEFT];
+                }
+                break;
+            case RIGHT:
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: y0_for_segment(5) - currentPixel.y - 1, y: 0 }, DOWN];
+                }
+                break;
+            case LEFT:
+                if (currentPixel.x <= 0) {
+                    return [{ x: side_length - 1, y: currentPixel.y - side_length }, LEFT];
+                }
+                break;
+            case DOWN:
+        }
+        return handleNormalVelocity(currentPixel, currentVelocity);
+    }
+
+    function segment5(currentPixel, currentVelocity) {
+        switch (currentVelocity) {
+            case RIGHT:
+                if (currentPixel.x >= side_length - 1) {
+                    return [{ x: 0, y: currentPixel.y - y0_for_segment(5) }, RIGHT];
+                }
+                break;
+            case DOWN:
+                if (currentPixel.y >= y0_for_segment(6) - 1) {
+                    return [{ x: 0, y: y0_for_segment(2) - currentPixel.x - 1 }, RIGHT];
+                }
+                break;
+            case LEFT:
+                if (currentPixel.x <= 0) {
+                    return [{ x: y0_for_segment(6) - currentPixel.y - 1, y: y0_for_segment(4) - 1 }, UP];
+                }
+                break;
+            case UP:
+        }
+        return handleNormalVelocity(currentPixel, currentVelocity);
+    }
+
     function determineCurrentSegment(pixel) {
-        if (pixel.y >= side_length &&
-            pixel.y < side_length * 2) {
-            return Math.floor(pixel.x / side_length);
-        } else if (pixel.y >= side_length * 2 &&
-            pixel.x >= side_length &&
-            pixel.x < side_length * 2) {
-            return 5;
-        } else if (pixel.y < side_length &&
-            pixel.x >= side_length * 2 &&
-            pixel.x < side_length * 3) {
-            return 4;
+        if (pixel.y >= 0 &&
+            pixel.y < side_length * 6 &&
+            pixel.x >= 0 &&
+            pixel.x < side_length) {
+            return Math.floor(pixel.y / side_length);
         } else {
             return -1;
         }
@@ -265,9 +259,12 @@ $(async function () {
 
     function placeFood() {
         do {
-            pixel = { x: randomInt(0, (side_length * 4) - 1), y: randomInt(0, (side_length * 3) - 1) };
+            pixel = {
+                x: randomInt(0, side_length - 1),
+                y: randomInt(0, (side_length * 6) - 1)
+            };
         }
-        while (intersectsWithBody(pixel) || determineCurrentSegment(pixel) < 0)
+        while (intersectsWithBody(pixel))
         food = pixel;
     }
 
@@ -276,48 +273,47 @@ $(async function () {
     }
 
     function render() {
-        console.log(JSON.stringify(body));
-        //#region just for testing
-        $('svg').empty();
 
-        const svgScale = 6;
+        $('#score').text(score);
 
-        $('svg').append(`<g transform="translate(0,${side_length * svgScale})">
-                <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,50);"/>
-            </g>`);
+        const bodyColour = [255, 0, 0];
+        const foodColour = [0, 255, 0];
+        const backColour = [200, 200, 10];//not 0, or you can't see it on the sim
 
-        $('svg').append(`<g transform="translate(${side_length * svgScale},${side_length * svgScale})">
-            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,100);"/>
-        </g>`);
+        let colorMap = new Array(side_length * side_length * 6).fill(backColour);
 
-        $('svg').append(`<g transform="translate(${side_length * svgScale},${side_length * svgScale *2})">
-            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,100);"/>
-        </g>`);
-
-        $('svg').append(`<g transform="translate(${side_length * svgScale * 2},${side_length * svgScale})">
-            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,150);"/>
-        </g>`);
-
-        $('svg').append(`<g transform="translate(${side_length * svgScale * 2},0)">
-            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,150);"/>
-        </g>`);
-
-        $('svg').append(`<g transform="translate(${side_length * svgScale * 3},${side_length * svgScale})">
-            <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(255,255,200);"/>
-        </g>`);
+        colorMap[(food.x + (food.y * side_length))] = foodColour;
 
         for (let pos of body) {
-            $('svg').append(`<g transform="translate(${pos.x * svgScale},${pos.y * svgScale})">
-                <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(255,0,0);"/>
-            </g>`);
+            colorMap[(pos.x + (pos.y * side_length))] = bodyColour;
         }
-        $('svg').append(`<g transform="translate(${food.x * svgScale},${food.y * svgScale})">
-                <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(0,255,0);"/>
-            </g>`);
-        $("#svg-outer").html($("#svg-outer").html());
+
+        API.send(colorMap);
+
+        //#region just for testing
+        //$('svg').empty();
+
+        //const svgScale = 4;
+
+        //for (let i = 0; i < 6; i++) {
+        //    $('svg').append(`<g transform="translate(0,${side_length * svgScale * i})">
+        //        <rect width="${side_length * svgScale}" height="${side_length * svgScale}" style="fill:rgb(${backColour[0]},${backColour[1]},${backColour[2]});"/>
+        //    </g>`);
+        //}
+
+        //for (let pos of body) {
+        //    $('svg').append(`<g transform="translate(${pos.x * svgScale},${pos.y * svgScale})">
+        //        <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(${bodyColour[0]},${bodyColour[1]},${bodyColour[2]});"/>
+        //    </g>`);
+        //}
+
+        //$('svg').append(`<g transform="translate(${food.x * svgScale},${food.y * svgScale})">
+        //        <rect width="${svgScale}" height="${svgScale}" style="fill:rgb(${foodColour[0]},${foodColour[1]},${foodColour[2]});"/>
+        //    </g>`);
+
+        //$("#svg-outer").html($("#svg-outer").html());
         //#endregion
-        //TODO 
-        //API.send(colorMap);
+
     }
 
 });
