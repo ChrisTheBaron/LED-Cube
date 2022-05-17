@@ -1,5 +1,7 @@
 const speed = 200;
 
+Controller.search();
+
 $(async function () {
 
     await API.connectAsync();
@@ -62,6 +64,21 @@ $(async function () {
         }
     };
 
+    window.addEventListener('gc.button.press', function (event) {
+        switch (event.detail.name) {
+            case 'RIGHT_SHOULDER_BOTTOM':
+            case 'RIGHT_SHOULDER':
+            case 'DPAD_RIGHT':
+                right();
+                break;
+            case 'LEFT_SHOULDER_BOTTOM':
+            case 'LEFT_SHOULDER':
+            case 'DPAD_LEFT':
+                left();
+                break;
+        }
+    }, false);
+
     async function sleep(int) {
         return new Promise((resolve) => setTimeout(resolve, int));
     }
@@ -91,7 +108,7 @@ $(async function () {
 
         const bodyColour = [255, 0, 0];
         const foodColour = [0, 255, 0];
-        const backColour = [200, 200, 10];//not 0, or you can't see it on the sim
+        const backColour = [10, 10, 10];//not 0, or you can't see it on the sim
 
         let colorMap = new Array(side_length * side_length * 6).fill(backColour);
 
