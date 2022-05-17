@@ -46,9 +46,9 @@ $(async function () {
         alert("Oops! Hit play to start again.");
     }
 
-    function left() { if (--velocity < UP) velocity = LEFT; }
+    function left() { velocity = determineLeftVelocity(velocity) }
 
-    function right() { if (++velocity > LEFT) velocity = UP; }
+    function right() { velocity = determineRightVelocity(velocity) }
 
     $('#left').click(left);
     $('#right').click(right);

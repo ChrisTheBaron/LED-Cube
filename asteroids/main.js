@@ -1,10 +1,12 @@
 const speed = 25;
 
-const SHIP_SLOW_FACTOR = 4;
-const ASTEROID_SLOW_FACTOR = 6;
+const SHIP_SLOW_FACTOR = 6;
+const ASTEROID_SLOW_FACTOR = 9;
 
 const START_LIVES = 5;
 const START_ROIDS = 6;
+
+Controller.search();
 
 $(async function () {
 
@@ -111,14 +113,36 @@ $(async function () {
         }
     }
 
-    function left() { console.log("left"); if (--ship.velocity < UP) ship.velocity = LEFT; }
+    function left() { ship.velocity = determineLeftVelocity(ship.velocity) }
 
-    function right() { console.log("right"); if (++ship.velocity > LEFT) ship.velocity = UP; }
+    function right() { ship.velocity = determineRightVelocity(ship.velocity) }
 
     $('#left').click(left);
     $('#right').click(right);
     $('#play').click(setupAndPlay);
     $('#fire').click(fire);
+
+    window.addEventListener('gc.button.press', function (event) {
+        switch (event.detail.name) {
+            case 'RIGHT_SHOULDER_BOTTOM':
+            case 'RIGHT_SHOULDER':
+            case 'DPAD_RIGHT':
+                right();
+                break;
+            case 'LEFT_SHOULDER_BOTTOM':
+            case 'LEFT_SHOULDER':
+            case 'DPAD_LEFT':
+                left();
+                break;
+            case 'FACE_2':
+            case 'FACE_1':
+                fire();
+                break;
+            default:
+                console.log(event.detail.name);
+                break;
+        }
+    }, false);
 
     document.onkeydown = function checkKey(e) {
         e = e || window.event;
@@ -168,7 +192,13 @@ $(async function () {
 
         let colorMap = new Array(side_length * side_length * 6).fill(backColour);
 
-        colorMap[(ship.position.x + (ship.position.y * side_length))] = shipColour;
+        //now for some fun
+        const forwards = determineNextPixelAndVelocity(ship.position, ship.velocity);
+        const leftRear = determineNextPixelAndVelocity(ship.position, determineLeftVelocity(ship.velocity));
+        const rightRear = determineNextPixelAndVelocity(ship.position, determineRightVelocity(ship.velocity));
+        colorMap[(leftRear[0].x + (leftRear[0].y * side_length))] = shipColour;
+        colorMap[(rightRear[0].x + (rightRear[0].y * side_length))] = shipColour;
+        colorMap[(forwards[0].x + (forwards[0].y * side_length))] = shipColour;
 
         for (let roid of asteroids) {
             colorMap[(roid.position.x + (roid.position.y * side_length))] = roidColour;

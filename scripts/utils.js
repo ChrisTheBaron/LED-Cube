@@ -6,6 +6,16 @@ const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 
+function determineLeftVelocity(velocity) {
+    if (--velocity < UP) velocity = LEFT;
+    return velocity;
+}
+
+function determineRightVelocity(velocity) {
+    if (++velocity > LEFT) velocity = UP;
+    return velocity;
+}
+
 function y0_for_segment(segment) {
     return side_length * segment;
 }
