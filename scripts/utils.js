@@ -1,10 +1,17 @@
-
 const side_length = 24;
 
 const UP = 0;
 const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
+
+async function sleep(int) {
+    return new Promise((resolve) => setTimeout(resolve, int));
+}
+
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 function determineLeftVelocity(velocity) {
     if (--velocity < UP) velocity = LEFT;
