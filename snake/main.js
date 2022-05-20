@@ -79,7 +79,7 @@ $(async function () {
         }
     }, false);
 
-  
+
     function placeFood() {
         do {
             pixel = {
@@ -101,7 +101,7 @@ $(async function () {
 
         const bodyColour = [255, 0, 0];
         const foodColour = [0, 255, 0];
-        const backColour = [10, 10, 10];//not 0, or you can't see it on the sim
+        const backColour = [0, 0, 0];
 
         let colorMap = new Array(side_length * side_length * 6).fill(backColour);
 

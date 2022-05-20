@@ -109,7 +109,7 @@ $(async function () {
     function render() {
 
         const aliveColour = [255, 255, 255];
-        const deadColour = [0, 0, 0];
+        const deadColour = [10, 10, 10];//not 0, or you can't see it on the sim
 
         let colorMap = new Array(side_length * side_length * 6);
 
