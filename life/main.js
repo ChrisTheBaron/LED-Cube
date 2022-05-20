@@ -1,6 +1,19 @@
 
-//TODO: add speed selector
-const speed = 750;
+$('#seed').val(btoa(Math.random()).substr(3,16));
+
+$('#randomseed').click(() => {
+    $('#seed').val(btoa(Math.random()).substr(3,16));
+});
+
+let speed = 750;
+
+$('#speed').change(() => {
+    speed = 2500 - parseInt($('#speed').val());
+    console.log(speed);
+});
+
+let running = false;
+let frame = 0;
 
 $(async function () {
 
@@ -15,12 +28,26 @@ $(async function () {
 
     await API.connectAsync();
 
-    //TODO: seed the seed and allow setting/sharing
-    populate("hi");
+    $('#start').click(async () => {
+        if(running && !confirm("Are you sure you want to restart the simulation?")){
+            return;
+        }
+        running = false;
+        //to ensure the loop below has stopped
+        await sleep(speed + 50);
+        populate($('#seed').val());
+        render();
+        await sleep(speed + 50);
+        running = true;
+        frame = 0;
+    });
 
     while (true) {
-        render();
-        compute();
+        if(running){
+            render();
+            compute();
+            frame++;
+        }
         await sleep(speed);
     }
 
@@ -95,6 +122,8 @@ $(async function () {
         }
 
         API.send(colorMap);
+
+        $('#frame').text(`Iteration: ${frame}`);
 
     }
 

@@ -29,7 +29,38 @@
     <div class="container">
         <main role="main" class="pb-3">
             <div class="text-center">
-                <h1 class="display-4">Welcome</h1>
+                <h1 class="display-4">Game of Life</h1>
+                <p>
+                    Hit 'Start!' to watch it go.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="speed">Speed</label><br/>
+                        <input id="speed" type="range" min="0" max="2250" value="1500" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seed">Seed</label>
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="seed" placeholder="Enter something random here!" />
+                            <div class="input-group-append">
+                                <button id="randomseed" class="btn btn-outline-secondary" type="button">Randomise Seed</button>
+                            </div>
+                        </div>
+
+                        <small class="form-text text-muted">
+                            Found an interesting pattern? Simply copy the seed and you can replay the same simulation
+                            over and over, or share it with a friend.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success btn-large" id="start" value="Start!" />
+                    </div>
+                </form>
+                <p id="frame">
+                </p>
             </div>
         </main>
     </div>
