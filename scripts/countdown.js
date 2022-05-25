@@ -21,7 +21,7 @@ $(() => {
 function getHumanTime(timestamp) {
 
     // get rid of millis
-    let time = Math.abs(timestamp) / 1000;
+    let time = Math.floor(Math.abs(timestamp) / 1000);
 
     let str = '';
 
@@ -40,7 +40,7 @@ function getHumanTime(timestamp) {
         str += `${minutes} minute${minutes > 1 ? 's' : ''}`;
     }
 
-    if (time > 0) {
+    if (time > 0.5) {//just in case some weird fp issue is happening
         let seconds = Math.floor(time);
         time -= seconds;
         if (str.length > 0) {
