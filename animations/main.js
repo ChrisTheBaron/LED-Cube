@@ -10,7 +10,7 @@ let frame = 0;
 
 $(async function () {
 
-    let animation = new Rainbow();
+    let animation = new RainbowRotate();
 
     await API.connectAsync();
 
