@@ -14,7 +14,6 @@ $(async function () {
     await API.connectAsync();
 
     $('#start').click(async () => {
-
         running = false;
         //to ensure the loop below has stopped
         await sleep(speed + 50);
@@ -34,11 +33,14 @@ $(async function () {
     });
 
     while (true) {
+        let before = new Date().getTime();
         if (running) {
             API.send(animation.render());
             animation.iterate();
         }
-        await sleep(speed);
+        let after = new Date().getTime();
+        let diff = after - before;
+        await sleep(Math.max(speed - diff, 0));
     }
 
 });
