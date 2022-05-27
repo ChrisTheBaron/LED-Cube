@@ -43,12 +43,15 @@ $(async function () {
     });
 
     while (true) {
+        let before = new Date().getTime();
         if (running) {
             render();
             compute();
             frame++;
         }
-        await sleep(speed);
+        let after = new Date().getTime();
+        let diff = after - before;
+        await sleep(Math.max(speed - diff, 0));
     }
 
     function compute() {
