@@ -1,4 +1,4 @@
-class Rainbow {
+class RainbowMoving {
 
     constructor(){
     }
