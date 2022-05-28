@@ -24,6 +24,7 @@ $(async function () {
             case "rainbowmoving": animation = new RainbowMoving(); break;
             case "rainbowrotate": animation = new RainbowRotate(); break;
             case "sparkle": animation = new Sparkle(); break;
+            case "rain": animation = new Rain(); break;
         }
 
         animation.populate();
