@@ -1,0 +1,14 @@
+body {
+    height: calc(100vh - 60px);
+    overflow: hidden;
+}
+
+main {
+    height: 100%;
+    margin-bottom: 60px;
+}
+
+    main .container {
+        height: 100%;
+        margin-bottom: 60px;
+    }
