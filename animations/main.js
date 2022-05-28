@@ -1,9 +1,12 @@
-let speed = 750;
+let speed;
 
 $('#speed').change(() => {
-    speed = 2500 - parseInt($('#speed').val());
+    speed = 1000 - parseInt($('#speed').val());
     console.log(speed);
 });
+
+// some browsers persist this when refreshing
+$('#speed').trigger('change');
 
 let running = false;
 
@@ -20,7 +23,7 @@ $(async function () {
 
         let selectedAnimation = $('#animation').val();
 
-        switch(selectedAnimation){
+        switch (selectedAnimation) {
             case "rainbowmoving": animation = new RainbowMoving(); break;
             case "rainbowrotate": animation = new RainbowRotate(); break;
             case "sparkle": animation = new Sparkle(); break;
