@@ -34,7 +34,7 @@ module.exports = class Snake {
         } else if (nextPixel.x == this.food.x &&
             nextPixel.y == this.food.y) {
             this.score++;
-            this.placeFood();
+            this.food = this.placeFood();
         } else {
             this.body.shift();
         }
