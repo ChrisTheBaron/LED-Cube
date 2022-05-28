@@ -161,6 +161,8 @@ const m = [
 ];
 
 let connected = false;
+let timeout = null;
+let lastFrame = null;
 
 (async function () {
     await API.connectAsync();
@@ -168,9 +170,21 @@ let connected = false;
     document.getElementById('reset').click();
 }());
 
+function heartbeat() {
+    if (connected && lastFrame != null) {
+        API.send(lastFrame);
+    }
+    timeout = setTimeout(heartbeat, 5 * 1000);
+}
+
 window.updateCube = function (data) {
     if (connected) {
-        API.send(mapCubeToAPI(data));
+        lastFrame = mapCubeToAPI(data);
+        API.send(lastFrame);
+        if (timeout != null) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(heartbeat, 5 * 1000);
     }
 }
 
