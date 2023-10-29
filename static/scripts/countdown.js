@@ -23,7 +23,7 @@ function getHumanTime(timestamp) {
     // get rid of millis
     let time = Math.floor(Math.abs(timestamp) / 1000);
 
-    let str = '';
+    let str = timestamp < 0 ? '- ' : '';
 
     if (time > (60 * 60)) {
         let hours = Math.floor(time / (60 * 60));
