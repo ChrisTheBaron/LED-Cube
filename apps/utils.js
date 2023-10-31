@@ -45,6 +45,24 @@ module.exports = class Utils {
         return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     }
 
+    /**
+     * 
+     * @return {Array}
+     */
+    static combineHSL(...colours) {
+        let x = 0, y = 0, z = 0;
+        for (let col of colours) {
+            x += Math.cos(col.h * 2 * Math.PI) * col.s;
+            y += Math.sin(col.h * 2 * Math.PI) * col.s;
+            z += col.l;
+        }
+        return [
+            (Math.atan2(y, x) / (2 * Math.PI)) + 0.5,
+            Math.sqrt(x * x + y * y) / colours.length,
+            z / colours.length
+        ];
+    }
+
     async sleep(int) {
         return new Promise((resolve) => setTimeout(resolve, int));
     }
