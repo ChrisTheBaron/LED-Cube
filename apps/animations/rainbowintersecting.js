@@ -25,7 +25,7 @@ module.exports = class RainbowIntersecting {
             let colY = { h: offsetY, s: 1, l: 0.5 };
             let colZ = { h: offsetZ, s: 1, l: 0.5 };
             let col = Utils.combineHSL(colX, colY, colZ);
-            this.colorMap[i] = Utils.hslToRgb(col[0], col[1], col[2]);
+            this.colorMap[i] = Utils.hslToRgb(col[0], 1, 0.5);
         }
         return this.colorMap;
     }
