@@ -19,13 +19,22 @@ module.exports = class GameOfLife {
             const y = Math.floor(Math.random() * Utils.side_length * 6);
             this.grid[y][x] = true;
         }
+
+        this.timer = 0;
     }
 
     input() {
 
     }
 
-    loop() {
+    loop(speed) {
+
+        this.timer += speed / 10;
+
+        if (this.timer < 1) {
+            return;
+        }
+        this.timer = 0;
 
         var ngrid = new Array(Utils.side_length * 6);
 

@@ -44,6 +44,13 @@ class API {
         this.socket.emit('message', message);
     }
 
+    static changeSpeed(speed) {
+        if (this.socket == null) {
+            throw new Error("Need to call connectAsync first!");
+        }
+        this.socket.emit('speed', speed);
+    }
+
 }
 
 //https://www.w3schools.com/js/js_cookies.asp

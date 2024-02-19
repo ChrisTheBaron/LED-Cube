@@ -2,12 +2,17 @@ $(async function () {
 
     await API.connectAsync();
 
-    let interval = null;
+    setInterval(() => API.sendHeartbeat(), 1000);
 
-    $('#start').click(async () => {
+    $('#animation').change(async () => {
         API.changeApplication('animations/' + $('#animation').val());
-        if (interval != null) clearInterval(interval);
-        interval = setInterval(() => API.sendHeartbeat(), 1000);
     });
+
+    $('#speed').change(() => {
+        API.changeSpeed(parseFloat($('#speed').val()));
+    });
+
+    $('#animation').trigger('change');
+    $('#speed').trigger('change');
 
 });

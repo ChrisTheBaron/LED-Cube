@@ -20,13 +20,21 @@ module.exports = class Rain {
             this.grid[y][x] = [0.5, 1, Math.random()];
         }
 
+        this.timer = 0;
     }
 
     input() {
 
     }
 
-    loop() {
+    loop(speed) {
+
+        this.timer += speed;
+
+        if (this.timer < 1) {
+            return;
+        }
+        this.timer = 0;
 
         let ngrid = new Array(Utils.side_length * 6);
 

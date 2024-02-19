@@ -10,13 +10,23 @@ module.exports = class Sparkle {
             const pos = Math.floor(Math.random() * this.colorMap.length);
             this.colorMap[pos] = [Math.random(), 1, 0.5];
         }
+
+        this.timer = 0;
     }
 
     input(data) {
 
     }
 
-    loop() {
+    loop(speed) {
+
+        this.timer += speed;
+
+        if (this.timer < 1) {
+            return;
+        }
+        this.timer = 0;
+
         for (let i = 0; i < this.colorMap.length; i++) {
             if (this.colorMap[i][2] > 0) {
                 this.colorMap[i][2] = Math.max(this.colorMap[i][2] - 0.025, 0);

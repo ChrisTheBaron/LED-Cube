@@ -14,8 +14,8 @@ module.exports = class RainbowNoise {
 
     }
 
-    loop() {
-        this.timeoffset = (this.timeoffset + 0.0025) % 1;
+    loop(speed) {
+        this.timeoffset = (this.timeoffset + (0.005 * speed)) % 1;
     }
 
     render() {

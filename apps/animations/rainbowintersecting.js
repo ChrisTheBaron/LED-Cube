@@ -12,8 +12,8 @@ module.exports = class RainbowIntersecting {
 
     }
 
-    loop() {
-        this.timeoffset = (this.timeoffset + 0.01) % 1;
+    loop(speed) {
+        this.timeoffset = (this.timeoffset + (0.02 * speed)) % 1;
     }
 
     render() {

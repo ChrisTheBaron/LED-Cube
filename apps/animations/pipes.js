@@ -16,13 +16,23 @@ module.exports = class Pipes {
             });
         }
 
+        this.timer = 0;
+
     }
 
     input() {
 
     }
 
-    loop() {
+    loop(speed) {
+
+        this.timer += speed;
+
+        if (this.timer < 1) {
+            return;
+        }
+        this.timer = 0;
+
         for (let pipe of this.pipes) {
             if (pipe.body.length > 10 && Math.random() > 0.95) {
                 pipe.alive = false;
