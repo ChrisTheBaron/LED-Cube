@@ -19,7 +19,7 @@ module.exports = class RainbowRotating {
 
     render() {
         for (let i = 0; i < this.colorMap.length; i++) {
-            let positionoffset = LEDs[i]["P"];
+            let positionoffset = LEDs[i]["A"];
             positionoffset = (positionoffset + Math.PI) / (2 * Math.PI);
             let offset = this.numberOfSpirals * (this.timeoffset + positionoffset) % 1;
             this.colorMap[i] = Utils.hslToRgb(offset, 1, 0.5);
