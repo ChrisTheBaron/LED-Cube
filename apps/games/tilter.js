@@ -20,8 +20,6 @@ module.exports = class Tilter {
     }
 
     render() {
-        let min = Infinity;
-        let max = 0;
 
         for (let i = 0; i < this.colorMap.length; i++) {
 
@@ -33,15 +31,18 @@ module.exports = class Tilter {
 
             let boundedDistance = haversineDistance(LEDs[i]["P"], LEDs[i]["A"], this.polar - (Math.PI / 2), -this.azimuthal) / Math.PI;
 
-            min = Math.min(min, boundedDistance);
-            max = Math.max(max, boundedDistance);
+            if (boundedDistance < 0.1) {
+                this.colorMap[i] = [0, 0, 0];
+            } else if (boundedDistance < 0.2) {
+                this.colorMap[i] = [0, 0, 255];
+            } else {
+                this.colorMap[i] = [255, 255, 255];
+            }
 
-            let l = boundedDistance < 0.05 ? 1 : 0;
+            //let l = boundedDistance < 0.05 ? 1 : 0;
 
-            this.colorMap[i] = Utils.hslToRgb(1, 0, l);
+            //this.colorMap[i] = Utils.hslToRgb(1, 0, l);
         }
-
-        console.log(min, max);
 
         return this.colorMap;
     }
