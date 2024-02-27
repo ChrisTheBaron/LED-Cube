@@ -9,11 +9,11 @@ const scene = new THREE.Scene();
 
 scene.background = new THREE.Color(0xffffff);
 
-const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, container.clientWidth / (container.clientHeight - 50), 0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer();
 const controls = new OrbitControls(camera, renderer.domElement);
-renderer.setSize(container.clientWidth, container.scrollHeight - 60);
+renderer.setSize(container.clientWidth, container.scrollHeight - 80);
 
 container.appendChild(renderer.domElement);
 
@@ -68,7 +68,7 @@ $(async function () {
 
     setInterval(() => API.sendHeartbeat(), 1000);
 
-    API.changeApplication('games/tilter');
+    API.changeApplication('games/sketch');
 
     API.sendInput({ polar: controls.getPolarAngle(), azimuthal: controls.getAzimuthalAngle() });
 
@@ -77,4 +77,19 @@ $(async function () {
         API.sendInput({ polar: controls.getPolarAngle(), azimuthal: controls.getAzimuthalAngle() });
     }), 1000 / 60);
 
+    $('#selectedColour').on('change', () => {
+        API.sendInput({ colour: hexToRgb($('#selectedColour').val()) });
+    })
+
+    $('#selectedColour').trigger('change');
+
 });
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ];
+}

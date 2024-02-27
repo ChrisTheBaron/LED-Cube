@@ -1,18 +1,23 @@
 ﻿const LEDs = require('../leds');
 const Utils = require('../utils');
 
-module.exports = class Tilter {
+module.exports = class Sketch {
 
     constructor() {
         this.azimuthal = 0;
         this.polar = 0;
+        this.colour = [0, 0, 0];
 
         this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([255, 255, 255]);
     }
 
     input(dir) {
-        this.azimuthal = dir.azimuthal;
-        this.polar = dir.polar;
+        if (dir.colour) {
+            this.colour = dir.colour;
+        } else {
+            this.azimuthal = dir.azimuthal;
+            this.polar = dir.polar;
+        }
     }
 
     loop() {
@@ -31,17 +36,10 @@ module.exports = class Tilter {
 
             let boundedDistance = haversineDistance(LEDs[i]["P"], LEDs[i]["A"], this.polar - (Math.PI / 2), -this.azimuthal) / Math.PI;
 
-            if (boundedDistance < 0.1) {
-                this.colorMap[i] = [0, 0, 0];
-            } else if (boundedDistance < 0.2) {
-                this.colorMap[i] = [0, 0, 255];
-            } else {
-                this.colorMap[i] = [255, 255, 255];
+            if (boundedDistance < 0.01) {
+                this.colorMap[i] = this.colour;
             }
 
-            //let l = boundedDistance < 0.05 ? 1 : 0;
-
-            //this.colorMap[i] = Utils.hslToRgb(1, 0, l);
         }
 
         return this.colorMap;
