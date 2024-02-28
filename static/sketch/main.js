@@ -73,7 +73,6 @@ $(async function () {
     API.sendInput({ polar: controls.getPolarAngle(), azimuthal: controls.getAzimuthalAngle() });
 
     controls.addEventListener('change', _.throttle(() => {
-        console.log({ polar: controls.getPolarAngle(), azimuthal: controls.getAzimuthalAngle() });
         API.sendInput({ polar: controls.getPolarAngle(), azimuthal: controls.getAzimuthalAngle() });
     }), 1000 / 60);
 
@@ -81,7 +80,12 @@ $(async function () {
         API.sendInput({ colour: hexToRgb($('#selectedColour').val()) });
     })
 
+    $('#brushSize').on('change', () => {
+        API.sendInput({ size: $('#brushSize').val() });
+    })
+
     $('#selectedColour').trigger('change');
+    $('#brushSize').trigger('change');
 
 });
 

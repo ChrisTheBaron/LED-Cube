@@ -6,14 +6,17 @@ module.exports = class Sketch {
     constructor() {
         this.azimuthal = 0;
         this.polar = 0;
-        this.colour = [0, 0, 0];
+        this.colour = [255, 255, 255];
+        this.size = 0.01;
 
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([255, 255, 255]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([0, 0, 0]);
     }
 
     input(dir) {
         if (dir.colour) {
             this.colour = dir.colour;
+        } else if (dir.size) {
+            this.size = parseFloat(dir.size);
         } else {
             this.azimuthal = dir.azimuthal;
             this.polar = dir.polar;
@@ -36,7 +39,7 @@ module.exports = class Sketch {
 
             let boundedDistance = haversineDistance(LEDs[i]["P"], LEDs[i]["A"], this.polar - (Math.PI / 2), -this.azimuthal) / Math.PI;
 
-            if (boundedDistance < 0.01) {
+            if (boundedDistance < this.size) {
                 this.colorMap[i] = this.colour;
             }
 
