@@ -161,33 +161,14 @@ const m = [
 ];
 
 let connected = false;
-let timeout = null;
-let lastFrame = null;
 
 (async function () {
     await API.connectAsync();
     API.changeApplication("raw");
     connected = true;
+    setInterval(() => API.sendHeartbeat(), 1000);
     document.getElementById('reset').click();
 }());
-
-function heartbeat() {
-    if (connected && lastFrame != null) {
-        API.send(lastFrame);
-    }
-    timeout = setTimeout(heartbeat, 5 * 1000);
-}
-
-window.updateCube = function (data) {
-    if (connected) {
-        lastFrame = mapCubeToAPI(data);
-        API.send(lastFrame);
-        if (timeout != null) {
-            clearTimeout(timeout);
-        }
-        timeout = setTimeout(heartbeat, 5 * 1000);
-    }
-}
 
 function mapCubeToAPI(data) {
     let mappedData = new Array(m.length);
@@ -195,4 +176,8 @@ function mapCubeToAPI(data) {
         mappedData[i] = c[data[m[i]]];
     }
     return mappedData;
+}
+
+window.updateCube = function (data) {
+    if (connected) API.send(mapCubeToAPI(data));
 }
