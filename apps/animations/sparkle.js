@@ -3,7 +3,7 @@ const Utils = require('../utils');
 module.exports = class Sparkle {
 
     constructor() {
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([10, 10, 10]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
 
         // 2/3rds looks about right
         for (let i = 0; i < (this.colorMap.length * (2 / 3)); i++) {
@@ -33,7 +33,7 @@ module.exports = class Sparkle {
             } else if (Math.random() > 0.9) {
                 this.colorMap[i] = [Math.random(), 1, 0.5];
             } else {
-                this.colorMap[i] = [10, 10, 10];
+                this.colorMap[i] = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
             }
         }
     }

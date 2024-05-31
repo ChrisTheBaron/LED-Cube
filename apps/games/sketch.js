@@ -9,7 +9,7 @@ module.exports = class Sketch {
         this.colour = [255, 255, 255];
         this.size = 0.01;
 
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([10, 10, 10]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
     }
 
     input(dir) {
@@ -41,6 +41,8 @@ module.exports = class Sketch {
 
             if (boundedDistance < this.size) {
                 this.colorMap[i] = this.colour;
+            } else if (this.colorMap[i][0] < 10) {
+                this.colorMap[i][0] = Math.floor(Math.random() * 10);
             }
 
         }

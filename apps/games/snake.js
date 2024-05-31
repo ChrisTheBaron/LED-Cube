@@ -45,7 +45,7 @@ module.exports = class Snake {
     render() {
         const bodyColour = [255, 0, 0];
         const foodColour = [0, 255, 0];
-        const backColour = [10, 10, 10];
+        const backColour = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 
         let colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill(backColour);
 

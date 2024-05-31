@@ -115,7 +115,7 @@ module.exports = class Asteroids {
         const shipColour = [255, 255, 255];
         const roidColour = [0, 255, 0];
         const bulletColour = [255, 0, 0];
-        const backColour = [10, 10, 10];
+        const backColour = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 
         let colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill(backColour);
 
