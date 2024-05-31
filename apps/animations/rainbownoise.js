@@ -5,7 +5,7 @@ const Perlin = require('../perlin');
 module.exports = class RainbowNoise {
 
     constructor() {
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([255, 255, 255]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([0, 0, 0]);
         this.timeoffset = 0;
         Perlin.noise.seed(Math.random());
     }

@@ -4,7 +4,7 @@ const LEDs = require('../leds');
 module.exports = class RainbowRotating {
 
     constructor() {
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([255, 255, 255]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([0, 0, 0]);
         this.timeoffset = 0;
         this.numberOfSpirals = 2;
     }
