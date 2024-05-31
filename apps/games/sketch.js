@@ -9,7 +9,7 @@ module.exports = class Sketch {
         this.colour = [255, 255, 255];
         this.size = 0.01;
 
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([0, 0, 0]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([10, 10, 10]);
     }
 
     input(dir) {

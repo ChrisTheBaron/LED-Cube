@@ -4,7 +4,7 @@ module.exports = class Pipes {
 
     constructor() {
 
-        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([0, 0, 0]);
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([10, 10, 10]);
         this.pipes = [];
 
         for (let i = 0; i < 6; i++) {

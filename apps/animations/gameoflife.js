@@ -82,7 +82,7 @@ module.exports = class GameOfLife {
     render() {
 
         const aliveColour = [255, 255, 255];
-        const deadColour = [0, 0, 0];
+        const deadColour = [10, 10, 10];
 
         let colorMap = new Array(Utils.side_length * Utils.side_length * 6);
 
