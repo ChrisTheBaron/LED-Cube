@@ -8,7 +8,9 @@ $().ready(async () => {
     bsCustomFileInput.init();
 
     await API.connectAsync();
-    
+
+    setInterval(() => API.sendHeartbeat(), 1000);
+
     $('#file').on('change', async () => {
 
         let file = $('#file')[0].files[0];
