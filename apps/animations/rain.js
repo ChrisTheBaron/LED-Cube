@@ -10,7 +10,7 @@ module.exports = class Rain {
         this.grid = new Array(Utils.side_length * 6);
 
         for (let i = 0; i < this.grid.length; i++) {
-            this.grid[i] = new Array(Utils.side_length).fill([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
+            this.grid[i] = new Array(Utils.side_length).fill([10, 10, 10]);
         }
 
         // 2/3rds looks about right
@@ -39,7 +39,7 @@ module.exports = class Rain {
         let ngrid = new Array(Utils.side_length * 6);
 
         for (let i = 0; i < ngrid.length; i++) {
-            ngrid[i] = new Array(Utils.side_length).fill([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
+            ngrid[i] = new Array(Utils.side_length).fill([10, 10, 10]);
         }
 
         for (let y = 0; y < Utils.side_length * 6; y++) {

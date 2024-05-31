@@ -4,6 +4,7 @@ module.exports = class Pipes {
 
     constructor() {
 
+        this.colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([10, 10, 10]);
         this.pipes = [];
 
         for (let i = 0; i < 6; i++) {
@@ -56,14 +57,12 @@ module.exports = class Pipes {
     }
 
     render() {
-        let colorMap = new Array(Utils.side_length * Utils.side_length * 6).fill([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
-
         for (let pipe of this.pipes) {
             for (let pos of pipe.body) {
-                colorMap[(pos.x + (pos.y * Utils.side_length))] = pipe.colour;
+                this.colorMap[(pos.x + (pos.y * Utils.side_length))] = pipe.colour;
             }
         }
-        return colorMap;
+        return this.colorMap;
     }
 
 }
